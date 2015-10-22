@@ -1,0 +1,19 @@
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+	padding-top: 50px;
+}
+
+/* Offset aleart class for pages with the side bar e.g index.php */
+.offsetAlert {
+	width: 60%;
+	margin-left: auto;
+	margin-right: auto;
+	z-index: 9001;
+	text-align: center;
+}
+.nonOffsetAlert {
+	width: 60%;
+	margin: 20px auto 0px auto;
+	z-index: 9001;
+		text-align: center;
+}
