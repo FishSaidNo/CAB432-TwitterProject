@@ -15,6 +15,9 @@
 	<link href="css/globalStyle.css" rel="stylesheet">
     <link href="css/dashboard.css" rel="stylesheet">
 
+	<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>-->
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -86,7 +89,9 @@
               <span class="text-muted">Something else</span>
             </div>
           </div>
-
+			
+		  <div id="some_id">test</div>
+		  
           <h2 class="sub-header">Section title</h2>
           <div class="table-responsive">
             <table class="table table-striped">
@@ -218,11 +223,15 @@
         </div>
       </div>
     </div>
-
-
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>-->
-    <script src="js/jquery-2.1.4.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+	
+	<script type="text/javascript">
+	// Check if the page has loaded completely                                         
+	$(document).ready( function() { 
+		setTimeout( function() { 
+			$('#some_id').load('index.php'); 
+		}, 1000); 
+	});
+	</script>
 	
     <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
     <script src="../../assets/js/vendor/holder.min.js"></script>
