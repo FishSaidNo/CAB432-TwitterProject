@@ -9,18 +9,18 @@
 #
 # - Corey
 
-# Import the necessary methods from Tweepy API
+# Import the necessary modules from Tweepy API (Simplified Twitter API for Python)
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
 
-# Twitter API access keys. These are my personal Twitter API keys, please don't share.
+# Twitter API access keys. These are my personal Twitter API keys, please don't share
 access_token = "306689174-piN0juIBvqgvhUW7XrNOQj850CbW0bMze7b6hcti"
 access_token_secret = "iPEM7ym9d5ioxBFTBOyye3eGsbnn7Pek9yL4MIsNswYJy"
 consumer_key = "2WoPFbAiFpUuS89dpWkhD76JZ"
 consumer_secret = "JpMgkq0QmhthWNajVGdM0Yy62DWevNn1V7vK9m51A4B2zvwA9w"
 
-# Basic listener that just prints received Tweets to stdout.
+# Basic listener that just prints received Tweets to stdout
 class StdOutListener(StreamListener):
 
     def on_data(self, data):
