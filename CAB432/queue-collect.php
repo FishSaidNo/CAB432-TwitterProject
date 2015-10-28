@@ -8,8 +8,8 @@
  */
 
 // Import the necessary modules from Phirehose API (Simplified Twitter API for PHP)
-require_once('../lib/Phirehose.php');
-require_once('../lib/OauthPhirehose.php');
+require_once('lib/Phirehose.php');
+require_once('lib/OauthPhirehose.php');
  
 // Ensure script doesn't timeout after 30 seconds.
 set_time_limit(0);
@@ -56,7 +56,7 @@ class GhettoQueueCollector extends OauthPhirehose
   {
 
     // Write the status to the stream (must be via getStream())
-    fputs($this->getStream(), $status);
+    fputs($this->getStream(), $status . PHP_EOL);
 
 	// Check to rotate file
     $now = time();
