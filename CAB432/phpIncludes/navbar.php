@@ -12,7 +12,7 @@
 		<div id="navbar" class="navbar-collapse collapse">
 
 			<?php
-				include 'phpIncludes/functions.php';
+				require_once 'phpIncludes/functions.php';
 				if (!inSession()) {
 					//Disply login form
 					echo '
@@ -32,7 +32,7 @@
 					//Show username & logout button
 					echo '
 						<form class="navbar-form navbar-right">
-							<a href="logout.php" type="button" class="btn btn-primary">Logout</a>
+							<a href="logout.php" type="button" class="btn btn-danger">Logout</a>
 						</form>
 						<p class="navbar-text navbar-right"> Logged in as: <a href="#">'.$_SESSION['username'].'</a></p>
 					';

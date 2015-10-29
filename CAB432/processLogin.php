@@ -5,7 +5,7 @@
 	//If already logged in - redirect to index
 	session_start();
 	if (inSession()) {
-		header('Location: http://'.$_SERVER["HTTP_HOST"].'/CAB432/index.php?alreadyloggedin'); // ?alreadyloggedin is just for debugging
+		header('Location: http://'.$_SERVER["HTTP_HOST"].'/CAB432/index.php?error=existingsession');
 		exit;
 	}
 	

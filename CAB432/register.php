@@ -1,78 +1,82 @@
 <?php
+require 'phpIncludes/functions.php';
 
-$requiredEmpty = 0; //Required fields that are empty
-$passwordMatchFail = False;
-$registerSuccess = False;
-$usernameTaken = False;
+if (inSession()) {
+	header('Location: http://'.$_SERVER["HTTP_HOST"].'/CAB432/index.php?error=existingsession'); //error... still need to create error page
+	exit;
+} 
+else {
+	$requiredEmpty = 0; //Required fields that are empty
+	$passwordMatchFail = False;
+	$registerSuccess = False;
+	$usernameTaken = False;
 
-if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST)) {
-	
-	require 'phpIncludes/functions.php';
-
-	//Initialize variables
-	$user = '';
-	$pass = '';
-	$confirmPass = '';
-
-	if (empty($_POST['username'])) {
-		$requiredEmpty += 1;
-	} else {
-		$user = cleanInput($_POST['username']);
-	}
-	if (empty($_POST['password'])) {
-		$requiredEmpty += 1;
-	} else {
-		$pass = hash('sha256', cleanInput($_POST['password']));
-	}
-	if (empty($_POST['confirmPassword'])) {
-		$requiredEmpty += 1;
-	} else {
-		$confirmPass = hash('sha256', cleanInput($_POST['confirmPassword']));
-	}
-	
-	if ($pass !== $confirmPass && $pass != '' && $confirmPass != ''){
-		$passwordMatchFail = True;
-	}
-	
-	if ($requiredEmpty == 0 && $passwordMatchFail == False) {
-		require 'PhpIncludes/dbConn.php';
+	if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST)) {
 		
-		try {
-			$query = 'SELECT * FROM users WHERE username=:username;';
-			$stmt = $db->prepare($query);
-			$stmt->bindValue(':username', $user, PDO::PARAM_STR);
-			$stmt->execute();
-			$row = $stmt->fetch(PDO::FETCH_ASSOC);
-			if (!empty($row)) {
-				$usernameTaken = True;
-			}
-			
-			//if no probs
-			if (!$usernameTaken) {
-				//Now we can add the new user to the db
-				$query = 'INSERT INTO users (userId, username, password) VALUES (0, :username, :password)';
-				$stmt = $db->prepare($query);
-				$stmt->bindValue(':username', $user, PDO::PARAM_STR);
-				$stmt->bindValue(':password', $pass, PDO::PARAM_STR);
-				$stmt->execute();
-				
-				$registerSuccess = True;
-			}
-			
-		} catch(PDOException $ex) {
-			header('Location: http://'.$_SERVER["HTTP_HOST"].'/CAB432/errorpage.php?id=PDO'); //error... still need to create error page
-			exit;
-		} 
-		if ($db != NULL) {
-			$db = NULL; //Close db connection
+		require 'phpIncludes/functions.php';
+
+		//Initialize variables
+		$user = '';
+		$pass = '';
+		$confirmPass = '';
+
+		if (empty($_POST['username'])) {
+			$requiredEmpty += 1;
+		} else {
+			$user = cleanInput($_POST['username']);
+		}
+		if (empty($_POST['password'])) {
+			$requiredEmpty += 1;
+		} else {
+			$pass = hash('sha256', cleanInput($_POST['password']));
+		}
+		if (empty($_POST['confirmPassword'])) {
+			$requiredEmpty += 1;
+		} else {
+			$confirmPass = hash('sha256', cleanInput($_POST['confirmPassword']));
 		}
 		
-	}
+		if ($pass !== $confirmPass && $pass != '' && $confirmPass != ''){
+			$passwordMatchFail = True;
+		}
+		
+		if ($requiredEmpty == 0 && $passwordMatchFail == False) {
+			require 'PhpIncludes/dbConn.php';
+			
+			try {
+				$query = 'SELECT * FROM users WHERE username=:username;';
+				$stmt = $db->prepare($query);
+				$stmt->bindValue(':username', $user, PDO::PARAM_STR);
+				$stmt->execute();
+				$row = $stmt->fetch(PDO::FETCH_ASSOC);
+				if (!empty($row)) {
+					$usernameTaken = True;
+				}
+				
+				//if no probs
+				if (!$usernameTaken) {
+					//Now we can add the new user to the db
+					$query = 'INSERT INTO users (userId, username, password) VALUES (0, :username, :password)';
+					$stmt = $db->prepare($query);
+					$stmt->bindValue(':username', $user, PDO::PARAM_STR);
+					$stmt->bindValue(':password', $pass, PDO::PARAM_STR);
+					$stmt->execute();
+					
+					$registerSuccess = True;
+				}
+				
+			} catch(PDOException $ex) {
+				header('Location: http://'.$_SERVER["HTTP_HOST"].'/CAB432/errorpage.php?id=PDO'); //error... still need to create error page
+				exit;
+			} 
+			if ($db != NULL) {
+				$db = NULL; //Close db connection
+			}
+			
+		}
 
-}
-	
-	
-	
+	}
+}	
 ?>
 
 <!DOCTYPE html>

@@ -35,7 +35,9 @@ class GhettoQueueCollector extends OauthPhirehose
    * @param string $queueDir
    * @param integer $rotateInterval
    */
-  public function __construct($username, $password, $queueDir = '/tmp', $rotateInterval = 10)
+   
+  //public function __construct($username, $password, $queueDir = '/tmp', $rotateInterval = 10)
+  public function __construct($username, $password, $queueDir = 'TweetQueues', $rotateInterval = 10)
   {
 
     // Sanity check

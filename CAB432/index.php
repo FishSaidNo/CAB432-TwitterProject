@@ -1,3 +1,7 @@
+<?php
+	require 'phpIncludes/functions.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,6 +66,14 @@
 						<div class="offsetAlert alert alert-info fade in">
 						<a href="#" class="close" data-dismiss="alert">&times;</a>
 						<strong>Alert!</strong> You have successfully logged out.</div>';							
+				}
+			}
+			if (!empty($_GET['error'])) {
+				if ($_GET['error'] == 'existingsession') {
+					echo '
+						<div class="offsetAlert alert alert-info fade in">
+						<a href="#" class="close" data-dismiss="alert">&times;</a>
+						<strong>Alert!</strong> You are already logged in, please <a href="logout.php"><strong><u>logout</u></strong></a> before trying again.</div>';							
 				}
 			}
 		?>

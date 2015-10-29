@@ -13,7 +13,8 @@ class GhettoQueueConsumer
   protected $filePattern;
   protected $checkInterval;
   
-  public function __construct($queueDir = '/tmp', $filePattern = 'twitter-queue*.queue', $checkInterval = 10)
+  //public function __construct($queueDir = '/tmp', $filePattern = 'twitter-queue*.queue', $checkInterval = 10)
+  public function __construct($queueDir = 'TweetQueues', $filePattern = 'twitter-queue*.queue', $checkInterval = 10)
   {
     $this->queueDir = $queueDir;
     $this->filePattern = $filePattern;
