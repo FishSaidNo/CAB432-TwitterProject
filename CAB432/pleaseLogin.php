@@ -18,7 +18,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Please Login</title>
+    <title>Please Login - TweetParser</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet"> <!-- Bootstrap core CSS -->    
 	<link href="css/globalStyle.css" rel="stylesheet">
@@ -39,15 +39,13 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
-            <li><a href="index.php">Overview</a></li>
-            <li><a href="manageFilters.php">Manage Tweet Filters</a></li>
-            <li><a href="#">Blah</a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li class="active"><a href="" style="color:red;"><strong>Please Login</strong></a></li>
-      </ul>
-
+			<ul class="nav nav-sidebar">
+				<li><a href="index.php">Overview</a></li>
+				<li><a href="manageFilters.php">Manage Tweet Filters</a></li>
+			</ul>
+			<ul class="nav nav-sidebar">
+				<li class="active"><a href="" style="color:red;"><strong>Please Login</strong></a></li>
+			</ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 

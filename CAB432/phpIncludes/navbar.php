@@ -7,7 +7,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="index.php">TwitterSomething</a>
+			<a class="navbar-brand" href="index.php">TweetParser</a>
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 

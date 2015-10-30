@@ -18,7 +18,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>TwitterSomething CAB432</title>
+    <title>Overview - TweetParser</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet"> <!-- Bootstrap core CSS -->    
 	<link href="css/globalStyle.css" rel="stylesheet">
@@ -41,11 +41,6 @@
           <ul class="nav nav-sidebar">
             <li class="active"><a href="index.php">Overview <span class="sr-only">(current)</span></a></li>
             <li><a href="manageFilters.php">Manage Tweet Filters</a></li>
-            <li><a href="#">Blah</a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li><a href="">Something</a></li>
-            <li><a href="">Else</a></li>
           </ul>
 
         </div>
@@ -82,8 +77,9 @@
 				}
 			}
 		?>
-          <h1 class="page-header">Dashboard</h1>
+        <h1 class="page-header">Overview - Tweet Parser for CAB432</h1>
 
+		  <!--
           <div class="row placeholders">
             <div class="col-xs-6 col-sm-3 placeholder">
               <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
@@ -106,8 +102,56 @@
               <span class="text-muted">Something else</span>
             </div>
           </div>
-		  
-          <h2 class="sub-header">Tweets</h2>
+-->		  
+		<h2 class="sub-header">Tweets</h2>
+		<div id="ajaxResults">
+		<h3 style="text-align: center;">Total tweets analysied in last window: <strong>4204</strong>. Window size: <strong>200 seconds</strong></h3></br>
+		<div class="table-responsive">
+		<table class="table table-striped">
+		  <thead>
+			<tr>
+			  <th>Term</th>
+			  <th>Occurences</th>
+			  <th>Positive Sentiment</th>
+			  <th>Neutral Sentiment</th>
+			  <th>Negative Sentiment</th>
+			</tr>
+		  </thead>
+		  <tbody>
+			<tr>
+			<td>pizza</td>
+			<td>584</td>
+			<td>550</td>
+			<td>20</td>
+			<td>14</td>
+			</tr>
+			<tr>
+			<td>qut</td>
+			<td>1</td>
+			<td>1</td>
+			<td>0</td>
+			<td>0</td>
+			</tr>
+			<tr>
+			<td>boom</td>
+			<td>721</td>
+			<td>435</td>
+			<td>122</td>
+			<td>164</td>
+			</tr>
+			<tr>
+			<td>idiot</td>
+			<td>2898</td>
+			<td>218</td>
+			<td>616</td>
+			<td>2064</td>
+			</tr>
+		  </tbody>
+		</table>
+		</div>
+		<div>
+			
+<!--
           <div class="table-responsive">
             <table class="table table-striped">
 			  <thead>
@@ -118,16 +162,46 @@
                 </tr>
               </thead>
               <tbody id="load_from_queue">
-				<!-- Fills from external file -->
+				<!-- Fills from external file --
               </tbody>
             </table>
           </div>
+-->
         </div>
       </div>
     </div>
-	
+
+<!--	
 	<script type="text/javascript">                                    
 		$('#load_from_queue').load('queue-consume.php');
+	</script>	
+--->
+
+	<script type="text/javascript">                                    
+		// // //$('#load_from_queue').load('queue-consume.php');
+		// // $( document ).ready(function() {
+			// // console.log( "Doc ready!" );
+			// // $.ajax({
+				// // type: 'GET',
+				// // url: 'queue-consume-v2.php',
+				// // data: '',
+				// // success: function(result)
+				// // {
+					// // var results = JSON.parse(result); //Convert 'JSON string result' to an actual JSON object in javascript
+					// // $('#ajaxResults').empty();
+					// // $('#ajaxResults').append(result);
+					// // // for (var term in results) {
+						// // // $('#ajaxResults').append(term);
+					// // // }
+				// // },
+				// // error: function(XMLHttpRequest, textStatus, errorThrown)
+				// // {
+					// // alert("Status: " + textStatus);
+					// // alert("Error: " + errorThrown);
+				// // }
+			// // });	
+		// // });
+
 	</script>
 	
 </body>

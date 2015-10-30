@@ -88,7 +88,7 @@ else {
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Register</title>
+    <title>Register - TweetParser</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet"> <!-- Bootstrap core CSS -->
     <link href="css/globalStyle.css" rel="stylesheet">

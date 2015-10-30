@@ -109,7 +109,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Manage Tweet Filters</title>
+    <title>Manage Filters - TweetParser</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet"> <!-- Bootstrap core CSS -->    
 	<link href="css/globalStyle.css" rel="stylesheet">
@@ -131,11 +131,6 @@
           <ul class="nav nav-sidebar">
             <li><a href="index.php">Overview</a></li>
             <li class="active"><a href="manageFilters.php">Manage Tweet Filters</a></li>
-            <li><a href="#">Blah</a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li><a href="">Something</a></li>
-            <li><a href="">Else</a></li>
           </ul>
 
         </div>
@@ -173,7 +168,7 @@
 			</div>
 			
 			<div id="termsList">
-				<h2 class="my-heading">Terms you are watching:</h2>
+				<h2 class="my-heading sub-header">Terms you are watching:</h2>
 				<div class="table-responsive">
 					<table class="table table-striped">
 						<thead>
@@ -187,7 +182,7 @@
 							foreach ($watchedTerms as $term) {
 								echo '<tr>';
 								echo '<td>' . $term . '</td>';
-								echo '<td>Delete Button Here</td>';
+								echo '<td><button type="button" class="btn btn-danger term="'.$term.'">Delete Term</button></td>';
 								echo '</tr>';
 							}
 						?>	
