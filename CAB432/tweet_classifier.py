@@ -7,6 +7,8 @@ import time
 import math
 import pickle
 import os.path
+import glob
+import json
 
 startTime = time.clock()
 
@@ -84,8 +86,8 @@ def extract_features(tweet):
 
 #Read the tweets one by one and process it
 #inpTweets = csv.reader(open('sampleTweets.csv', 'rt'), delimiter=',', quotechar='|')
-inpTweets = csv.reader(open('full_training_dataset.csv', 'rt', encoding="latin-1"), delimiter=',', quotechar='"')
-stopWords = getStopWordList('stopwords.txt')
+inpTweets = csv.reader(open('python/full_training_dataset.csv', 'rt', encoding="latin-1"), delimiter=',', quotechar='"')
+stopWords = getStopWordList('python/stopwords.txt')
 count = 0;
 featureList = []
 tweets = []
@@ -107,9 +109,9 @@ training_set = nltk.classify.util.apply_features(extract_features, tweets)
 NBClassifier = None
 Text = None
 # If training data is already created, load it
-if os.path.isfile('naivebayes_trained_classifier.pickle'):
+if os.path.isfile('python/naivebayes_trained_classifier.pickle'):
 	# Open and load
-	f = open('naivebayes_trained_classifier.pickle', 'rb')
+	f = open('python/naivebayes_trained_classifier.pickle', 'rb')
 	NBClassifier = pickle.load(f)
 	f.close()
 	
@@ -121,7 +123,7 @@ else:
 	NBClassifier = nltk.NaiveBayesClassifier.train(training_set)
 	
 	# Save
-	f = open('naivebayes_trained_classifier.pickle', 'wb')
+	f = open('python/naivebayes_trained_classifier.pickle', 'wb')
 	pickle.dump(NBClassifier, f)
 	f.close()
 	
@@ -134,19 +136,38 @@ if clockTime > 60:
 	print ("\nTook %i minutes %.2g seconds to %s classifier\nRunning test tweets...\n" % (clockTime, remainder, Text) )
 else:
 	print ("\nTook %.2g seconds to %s classifier\nRunning test tweets...\n" % (clockTime, Text) )
-startTime = time.clock()
-# Test the classifier
-testTweet = [
-'Congrats @ravikiranj, i heard you wrote a new tech post on sentiment analysis',
-'In even more exciting news, we\'re updating our legal documents! Enjoy!',
-'Pizza for dinner is still is the best news anybody can hear',
-'Excited for this week with @Celestron :)',
-'My week off has officially come to an end.  I think I\'ve shown a ton of potential at doing no work ever all day.',
-'I started watching Rick & Morty. It\'s excellent.'
-]
-for row in testTweet:
-	processedTestTweet = processTweet(row)
-	sentiment = NBClassifier.classify(extract_features(getFeatureVector(processedTestTweet, stopWords)))
-	print ("testTweet = %s, sentiment = %s\n" % (row, sentiment))
 
-print ("Took %.2g seconds to compute tests..." % (time.clock() - startTime) )
+while True:
+	# Test the classifier
+	
+	#testTweet = [
+	#'Congrats @ravikiranj, i heard you wrote a new tech post on sentiment analysis',
+	#'In even more exciting news, we\'re updating our legal documents! Enjoy!',
+	#'Pizza for dinner is still is the best news anybody can hear',
+	#'Excited for this week with @Celestron :)',
+	#'My week off has officially come to an end.  I think I\'ve shown a ton of potential at doing no work ever all day.',
+	#'I started watching Rick & Morty. It\'s excellent.'
+	#]
+	
+	queueFiles = glob.glob('TweetQueues/twitter-queue*.queue')
+	for queueFile in queueFiles:
+		try:
+			f = open(queueFile, 'rt')#, encoding="utf8")
+		except IOError:
+			# Do nothing for now
+			print ("File locked ", f)
+		with f:
+			json_data = json.load(f)
+			#print(json_data.decode('utf-8').encode('cp850','replace').decode('cp850'))
+			i = 0
+			f2 = open(queueFile + '2', 'wt')
+			data = {}
+			for row in json_data:
+				i = i + 1
+				processedTestTweet = processTweet(row[i][4])
+				sentiment = NBClassifier.classify(extract_features(getFeatureVector(processedTestTweet, stopWords)))
+				#print ("testTweet = %s, sentiment = %s\n" % (row, sentiment))
+				data[i] = {row[i][4],sentiment}
+				
+			f2.write(json.dumps(data))
+			f2.close()
