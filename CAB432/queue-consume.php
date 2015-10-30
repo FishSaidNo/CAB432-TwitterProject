@@ -12,6 +12,7 @@ class GhettoQueueConsumer
   protected $queueDir;
   protected $filePattern;
   protected $checkInterval;
+  private $statusCounter;
   
   //public function __construct($queueDir = '/tmp', $filePattern = 'twitter-queue*.queue', $checkInterval = 10)
   public function __construct($queueDir = 'TweetQueues', $filePattern = 'twitter-queue*.queue', $checkInterval = 10)
@@ -28,7 +29,7 @@ class GhettoQueueConsumer
   }
   
   public function process() {
-    
+    $this->statusCounter = 0;
     // Init some things
     $lastCheck = 0;
     
@@ -42,9 +43,10 @@ class GhettoQueueConsumer
       $this->log('Found ' . count($queueFiles) . ' queue files to process...');
       
       // Iterate over each file (if any)
-      //foreach ($queueFiles as $queueFile) {
-        $this->processQueueFile($queueFiles[0]);
-      //}
+      foreach ($queueFiles as $queueFile) {
+		if ($this->statusCounter >= 30) {break;}
+        $this->processQueueFile($queueFile);
+      }
       
       // Wait until ready for next check
       //$this->log('Sleeping...');
@@ -72,7 +74,6 @@ class GhettoQueueConsumer
     flock($fp, LOCK_EX);
     
     // Loop over each line (1 line per status)
-    $statusCounter = 0;
     while ($rawStatus = fgets($fp)) {
       
       $data = json_decode($rawStatus, true);
@@ -80,15 +81,15 @@ class GhettoQueueConsumer
 		echo json_last_error_msg();
 	  }
       if (is_array($data) && isset($data['user']['screen_name'])) {
-		$statusCounter ++;
+		$this->statusCounter++;
 		echo '<tr>';
-		echo '<td>' . $statusCounter . '</td>';
+		echo '<td>' . $this->statusCounter . '</td>';
 		echo '<td>' . $data['user']['screen_name'] . '</td>';
 		echo '<td>' . urldecode($data['text']) . '</td>';
         echo '</tr>';
       }
       
-	  if ($statusCounter >= 30) {break;}
+	  if ($this->statusCounter >= 30) {break;}
     } // End while
     
     // Release lock and close
