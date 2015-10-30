@@ -2,7 +2,7 @@
 require 'phpIncludes/functions.php';
 
 if (inSession()) {
-	header('Location: http://'.$_SERVER["HTTP_HOST"].'/CAB432/index.php?error=existingsession'); //error... still need to create error page
+	header('Location: http://'.$_SERVER["HTTP_HOST"].'/CAB432/index.php?error=existingsession'); //error
 	exit;
 } 
 else {

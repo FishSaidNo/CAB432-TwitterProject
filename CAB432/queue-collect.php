@@ -135,6 +135,45 @@ class GhettoQueueCollector extends OauthPhirehose
 
 } // End of class
 
+//////////
+//Get the list of terms all users are watching...
+require 'phpIncludes/dbConn.php';
+
+$result_rows = []; //Initialize query result
+$allWatchedTerms = []; //List of terms watched by all users
+
+try {
+	$query = 'SELECT watchedTerms FROM users;';
+	$stmt = $db->prepare($query);
+	$stmt->execute();
+	$result_rows = $stmt->fetchAll(PDO::FETCH_ASSOC);	
+	//print_r($result_rows);
+} catch(PDOException $ex) {
+	header('Location: http://'.$_SERVER["HTTP_HOST"].'/CAB432/errorpage.php?id=PDOfromqueue-collect'); //error
+	exit;
+} 	
+
+//Iterates over all users watechedTerms
+foreach ($result_rows as $row) {
+	$usersWatchedTerms = [];
+	
+	if (empty($row) || $row['watchedTerms'] == '') {
+		//This user is not watching any terms
+		continue;
+	} else {
+		//Store terms in array
+		$usersWatchedTerms = explode(',', $row['watchedTerms']);
+	}
+	
+	//Check the user's term has not already been added (i.e. also watched by another user)
+	foreach ($usersWatchedTerms as $term) {
+		if (!in_array($term, $allWatchedTerms)) {
+			$allWatchedTerms[] = $term;
+		}
+	}				
+}
+//////////
+
 // Twitter API access keys. These are my personal Twitter API keys, please don't share
 define("TWITTER_CONSUMER_KEY", "2WoPFbAiFpUuS89dpWkhD76JZ");
 define("TWITTER_CONSUMER_SECRET", "JpMgkq0QmhthWNajVGdM0Yy62DWevNn1V7vK9m51A4B2zvwA9w");
@@ -143,5 +182,6 @@ define("OAUTH_SECRET", "iPEM7ym9d5ioxBFTBOyye3eGsbnn7Pek9yL4MIsNswYJy");
 
 // Start streaming/collecting under filter terms
 $sc = new GhettoQueueCollector(OAUTH_TOKEN, OAUTH_SECRET);
-$sc->setTrack(array('morning', 'goodnight', 'hello', 'the', 'and'));
+//$sc->setTrack(array('morning', 'goodnight', 'hello', 'the', 'and'));
+$sc->setTrack($allWatchedTerms);
 $sc->consume();

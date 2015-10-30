@@ -1,5 +1,10 @@
 <?php
-	require 'phpIncludes/functions.php';
+	require 'phpIncludes/functions.php';	
+	//If not logged in, redirect the user
+	if (!inSession()) {
+		header('Location: http://'.$_SERVER["HTTP_HOST"].'/CAB432/pleaseLogin.php');
+		exit;
+	}
 ?>
 
 <!DOCTYPE html>
@@ -34,8 +39,8 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
-            <li><a href="#">Manage Tweet Filters</a></li>
+            <li class="active"><a href="index.php">Overview <span class="sr-only">(current)</span></a></li>
+            <li><a href="manageFilters.php">Manage Tweet Filters</a></li>
             <li><a href="#">Blah</a></li>
           </ul>
           <ul class="nav nav-sidebar">
@@ -124,9 +129,6 @@
 	<script type="text/javascript">                                    
 		$('#load_from_queue').load('queue-consume.php');
 	</script>
-	
-    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
-    <script src="../../assets/js/vendor/holder.min.js"></script>
 	
 </body>
 </html>
