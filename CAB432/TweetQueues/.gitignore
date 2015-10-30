@@ -45,5 +45,5 @@ Temporary Items
 #IGNORE ALL OUR QUEUE FILES
 #IGNORE ALL OUR QUEUE FILES
 #IGNORE ALL OUR QUEUE FILES
-.queue
-.current
+*.queue
+*.current
