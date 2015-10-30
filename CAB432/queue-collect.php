@@ -146,12 +146,14 @@ try {
 	$query = 'SELECT watchedTerms FROM users;';
 	$stmt = $db->prepare($query);
 	$stmt->execute();
-	$result_rows = $stmt->fetchAll(PDO::FETCH_ASSOC);	
-	//print_r($result_rows);
+	$result_rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch(PDOException $ex) {
 	header('Location: http://'.$_SERVER["HTTP_HOST"].'/CAB432/errorpage.php?id=PDOfromqueue-collect'); //error
 	exit;
-} 	
+}
+if ($db != NULL) {
+	$db = NULL; //Close db connection
+}		
 
 //Iterates over all users watechedTerms
 foreach ($result_rows as $row) {

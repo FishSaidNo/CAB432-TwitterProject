@@ -12,8 +12,6 @@ else {
 	$usernameTaken = False;
 
 	if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST)) {
-		
-		require 'phpIncludes/functions.php';
 
 		//Initialize variables
 		$user = '';
