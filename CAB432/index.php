@@ -25,8 +25,8 @@
     <link href="css/dashboard.css" rel="stylesheet">
 
 	<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>-->
-    <!--<script src="js/jquery-2.1.4.min.js"></script>-->
-	<script src="http://code.jquery.com/jquery-2.1.4.js"></script>
+    <script src="js/jquery-2.1.4.min.js"></script>
+	<!--<script src="http://code.jquery.com/jquery-2.1.4.js"></script>-->
     <script src="js/bootstrap.min.js"></script>
 </head>
 
@@ -178,32 +178,37 @@
 	</script>	
 --->
 
-	<script type="text/javascript">                                    
+	<script type="text/javascript">
+		function drawTable(data) {
+			for (var i = 0; i < data.length; i++) {
+				console.log("a");
+				var row = $("<tr />");
+				$('#load_from_queue').append(row);
+				row.append($("<td>" + data[i].occurs + "</td>"));
+				row.append($("<td>" + data[i].positive + "</td>"));
+				row.append($("<td>" + data[i].negative + "</td>"));
+			}
+		}
+		
 		//$('#load_from_queue').load('queue-consume-v2.php');
 		 $( document ).ready(function() {
 			 console.log( "Doc ready!" );
 			 $.ajax({
-				 type: 'GET',
+				 method: 'GET',
 				 url: 'queue-consume-v2.php',
 				 dataType: 'json',
-				 success: function(result) //Depreciated now, use done?
+				 success: function(result)
 				 {
-					 alert(typeof(results));
-					 //var results = JSON.parse(result); //Convert 'JSON string result' to an actual JSON object in javascript
-					 //$('#ajaxResults').empty();
-					 //$('#ajaxResults').append(result);
-					 //for (var term in results) {
-					//	 $('#ajaxResults').append(term);
-					 //}
+					 //console.log(result);
+					 drawTable(result);
 				 },
-				 error: function(XMLHttpRequest, textStatus, errorThrown) //Depreciated now, use fail?
+				 error: function(XMLHttpRequest, textStatus, errorThrown)
 				 {
 					 alert("Status: " + textStatus);
 					 alert("Error: " + errorThrown);
 				 }
 			 });	
 		 });
-
 	</script>
 	
 </body>
