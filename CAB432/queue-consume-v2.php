@@ -27,7 +27,7 @@ class GhettoQueueConsumer
   private $statusCounter;
   
   //public function __construct($queueDir = '/tmp', $filePattern = 'twitter-queue*.queue', $checkInterval = 10)
-  public function __construct($queueDir = 'TweetQueues', $filePattern = 'twitter-queue*.queue', $checkInterval = 10)
+  public function __construct($queueDir = 'TweetQueues', $filePattern = 'twitter-queue*.queue2', $checkInterval = 10)
   {
     $this->queueDir = $queueDir;
     $this->filePattern = $filePattern;
@@ -56,7 +56,7 @@ class GhettoQueueConsumer
       
       // Iterate over each file (if any)
       foreach ($queueFiles as $queueFile) {
-		if ($this->statusCounter >= 30) {break;}
+		//if ($this->statusCounter >= 30) {break;}
         $this->processQueueFile($queueFile);
       }
       
@@ -118,12 +118,12 @@ class GhettoQueueConsumer
 	
 	//setup structure of result_array
 	foreach ($watchedTerms as $term) {
-		$termArray = array ('occurs' => 0);
+		$termArray = array ('occurs' => 0, 'positive' => 0, 'negative' => 0, 'neutral' => 0);
 		
 		if(!isset($result_array[$term])) {
 			$result_array[$term] = array();
 		}
-		$result_array[$term][] = $termArray;
+		$result_array[$term] = $termArray;
 	}
 	
     // Loop over each line (1 line per status)
@@ -142,16 +142,26 @@ class GhettoQueueConsumer
 			// echo '<td>' . urldecode($data['text']) . '</td>';
 			// echo '</tr>';
 				
+			$tweet = urldecode($data['text']);
 			foreach ($watchedTerms as $term) {
-				$tweet = urldecode($data['text']);
-				if (strpos($tweet, $term) !== False) {
+				if (strpos(strtolower($tweet), $term) !== False) {
 					//If the tweet contains the term...
 					$result_array[$term]['occurs'] += 1;
+					
+					if ($data['sentiment'] == 'positive') {
+						$result_array[$term]['positive'] += 1;
+					} elseif ($data['sentiment'] == 'negative') {
+						$result_array[$term]['negative'] += 1;
+					} elseif ($data['sentiment'] == 'neutral') {
+						$result_array[$term]['neutral'] += 1;
+					} else {
+						// Wha??
+					}
 				}
 			}
       }
       
-	  if ($this->statusCounter >= 30) {break;}
+	  //if ($this->statusCounter >= 30) {break;}
     } // End while
     
     // Release lock and close
@@ -159,7 +169,7 @@ class GhettoQueueConsumer
     fclose($fp);
     
     // All done with this file
-    $this->log('Successfully processed ' . $statusCounter . ' tweets from ' . $queueFile . ' - deleting.');
+    $this->log('Successfully processed ' . $this->statusCounter . ' tweets from ' . $queueFile . ' - deleting.');
     //unlink($queueFile);    
     
 	//echo the data as json

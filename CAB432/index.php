@@ -25,7 +25,8 @@
     <link href="css/dashboard.css" rel="stylesheet">
 
 	<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>-->
-    <script src="js/jquery-2.1.4.min.js"></script>
+    <!--<script src="js/jquery-2.1.4.min.js"></script>-->
+	<script src="http://code.jquery.com/jquery-2.1.4.js"></script>
     <script src="js/bootstrap.min.js"></script>
 </head>
 
@@ -117,7 +118,7 @@
 			  <th>Negative Sentiment</th>
 			</tr>
 		  </thead>
-		  <tbody>
+		  <tbody id="load_from_queue">
 			<tr>
 			<td>pizza</td>
 			<td>584</td>
@@ -178,29 +179,30 @@
 --->
 
 	<script type="text/javascript">                                    
-		// // //$('#load_from_queue').load('queue-consume.php');
-		// // $( document ).ready(function() {
-			// // console.log( "Doc ready!" );
-			// // $.ajax({
-				// // type: 'GET',
-				// // url: 'queue-consume-v2.php',
-				// // data: '',
-				// // success: function(result)
-				// // {
-					// // var results = JSON.parse(result); //Convert 'JSON string result' to an actual JSON object in javascript
-					// // $('#ajaxResults').empty();
-					// // $('#ajaxResults').append(result);
-					// // // for (var term in results) {
-						// // // $('#ajaxResults').append(term);
-					// // // }
-				// // },
-				// // error: function(XMLHttpRequest, textStatus, errorThrown)
-				// // {
-					// // alert("Status: " + textStatus);
-					// // alert("Error: " + errorThrown);
-				// // }
-			// // });	
-		// // });
+		//$('#load_from_queue').load('queue-consume-v2.php');
+		 $( document ).ready(function() {
+			 console.log( "Doc ready!" );
+			 $.ajax({
+				 type: 'GET',
+				 url: 'queue-consume-v2.php',
+				 dataType: 'json',
+				 success: function(result) //Depreciated now, use done?
+				 {
+					 alert(typeof(results));
+					 //var results = JSON.parse(result); //Convert 'JSON string result' to an actual JSON object in javascript
+					 //$('#ajaxResults').empty();
+					 //$('#ajaxResults').append(result);
+					 //for (var term in results) {
+					//	 $('#ajaxResults').append(term);
+					 //}
+				 },
+				 error: function(XMLHttpRequest, textStatus, errorThrown) //Depreciated now, use fail?
+				 {
+					 alert("Status: " + textStatus);
+					 alert("Error: " + errorThrown);
+				 }
+			 });	
+		 });
 
 	</script>
 	

@@ -153,47 +153,48 @@ else:
 	Pos = 0
 	Neg = 0
 	Neu = 0
-	PosT = []
-	NegT = []
-	NeuT = []
+	#PosT = []
+	#NegT = []
+	#NeuT = []
 	
 	queueFiles = glob.glob('TweetQueues/twitter-queue*.queue')
 	for queueFile in queueFiles:
+		f2 = open(queueFile + '2', 'at')
 		with open(queueFile, 'rt') as f:
 			for line in f:
 				json_data = json.loads(line)
-				#print(line)#.encode(sys.stdout.encoding, 'replace'))
-				#print(json_data.encode(sys.stdout.encoding, 'replace'))
-				#i = 0
-				#data = []
-				#for row in json_data:
-				#i = i + 1
-					#print(type(json_data[row]))
-				#print(json_data['text'].encode(sys.stdout.encoding, 'replace'))
 				Text = json_data['text']
+				
 				processedTestTweet = processTweet(Text)
 				sentiment = NBClassifier.classify(extract_features(getFeatureVector(processedTestTweet, stopWords)))
-				print ("Tweet = %s, sentiment = %s\n" % (Text.encode(sys.stdout.encoding, 'replace'), sentiment))
 				
 				if (sentiment == 'positive'):
 					Pos = Pos + 1
-					PosT.append(Text)
+					#PosT.append(Text)
 				elif (sentiment == 'negative'):
 					Neg = Neg + 1
-					NegT.append(Text)
+					#NegT.append(Text)
 				elif (sentiment == 'neutral'):
 					Neu = Neu + 1
-					NeuT.append(Text)
+					#NeuT.append(Text)
 				else:
 					print('Error, unclassified tweet')
-					#data[i] = {row[i][4],sentiment}
 				
-	tweet_data = {
-		'Positive': PosT,
-		'Negative': NegT,
-		'Neutral': NeuT
-	}
-	f2 = open(queueFile + '2', 'wt')
-	f2.write(json.dumps(tweet_data))
-	f2.close()
+				tweet_data = {
+					"text": Text,
+					"sentiment": sentiment
+				}
+				f2.write(json.dumps(tweet_data) + "\n")
+				print ("Tweet = %s, Sentiment = %s\n" % (Text.encode(sys.stdout.encoding, 'replace'), sentiment))
+				
+			f2.close()
+				
+	#tweet_data = {
+	#	'Positive': PosT,
+	#	'Negative': NegT,
+	#	'Neutral': NeuT
+	#}
+	#f2.write(json.dumps(tweet_data))
+	#f2.close()
+	
 	print("Positive: %i, Negative: %i, Neutral: %i" % (Pos, Neg, Neu) )
