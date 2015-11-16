@@ -152,7 +152,7 @@
 		</div>
 		<div>
 			
-<!--
+
           <div class="table-responsive">
             <table class="table table-striped">
 			  <thead>
@@ -163,11 +163,11 @@
                 </tr>
               </thead>
               <tbody id="load_from_queue">
-				<!-- Fills from external file --
+				<!-- Fills from external file -->
               </tbody>
             </table>
           </div>
--->
+
         </div>
       </div>
     </div>

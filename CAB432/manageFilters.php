@@ -145,6 +145,12 @@
 							<a href="#" class="close" data-dismiss="alert">&times;</a>
 							<strong>Success!</strong> Your new search term / tweet filter was successfully added.</div>';							
 					}
+					if ($_GET['success'] == 'termdeleted') {
+						echo '
+							<div class="offsetAlert alert alert-warning fade in">
+							<a href="#" class="close" data-dismiss="alert">&times;</a>
+							<strong>Term Deleted!</strong> Your have successfully deleted the term.</div>';							
+					}
 				} elseif (!empty($_GET['error'])) {
 					if ($_GET['error'] == 'termexists') {
 						echo '
@@ -153,6 +159,7 @@
 							<strong>Error!</strong> You are already watching the term you tried to add...</div>';							
 					}
 				}
+				
 			?>
 			
 			<h1 class="page-header">Manage Tweet Filters</h1>
@@ -182,7 +189,7 @@
 							foreach ($watchedTerms as $term) {
 								echo '<tr>';
 								echo '<td>' . $term . '</td>';
-								echo '<td><button type="button" class="btn btn-danger term="'.$term.'">Delete Term</button></td>';
+								echo '<td><button type="button" class="btn btn-danger termBtn" term="'.$term.'">Delete Term</button></td>';
 								echo '</tr>';
 							}
 						?>	
@@ -190,6 +197,15 @@
 					</table>
 				</div>
 			</div>
+			
+		</div>	
+	</div>	
 	
+	
+	<script type="text/javascript">
+		$('.termBtn').on('click', function() {
+			window.location.href = 'deleteTerm.php?term=' + $(this).attr('term');
+		});
+	</script>	
 </body>
 </html>

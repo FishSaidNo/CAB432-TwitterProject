@@ -169,7 +169,7 @@ class GhettoQueueConsumer
     fclose($fp);
     
     // All done with this file
-    $this->log('Successfully processed ' . $this->statusCounter . ' tweets from ' . $queueFile . ' - deleting.');
+    //$this->log('Successfully processed ' . $this->statusCounter . ' tweets from ' . $queueFile . ' - deleting.');
     //unlink($queueFile);    
     
 	//echo the data as json
