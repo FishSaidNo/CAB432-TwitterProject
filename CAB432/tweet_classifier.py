@@ -138,7 +138,7 @@ if clockTime > 60:
 else:
 	print ("\nTook %.2g seconds to %s classifier\nRunning test tweets...\n" % (clockTime, Text) )
 
-#while True:
+while True:
 	# Test the classifier
 	
 	#testTweet = [
@@ -153,6 +153,7 @@ else:
 	Pos = 0
 	Neg = 0
 	Neu = 0
+	Tot = 0
 	#PosT = []
 	#NegT = []
 	#NeuT = []
@@ -169,6 +170,7 @@ else:
 					processedTestTweet = processTweet(Text)
 					sentiment = NBClassifier.classify(extract_features(getFeatureVector(processedTestTweet, stopWords)))
 					
+					Tot = Tot + 1
 					if (sentiment == 'positive'):
 						Pos = Pos + 1
 						#PosT.append(Text)
@@ -189,7 +191,8 @@ else:
 					print ("Tweet = %s, Sentiment = %s\n" % (Text.encode(sys.stdout.encoding, 'replace'), sentiment))
 				
 			f2.close()
-				
+			f.close()
+			os.remove(queueFile)
 	#tweet_data = {
 	#	'Positive': PosT,
 	#	'Negative': NegT,
@@ -197,5 +200,6 @@ else:
 	#}
 	#f2.write(json.dumps(tweet_data))
 	#f2.close()
-	
-	print("Positive: %i, Negative: %i, Neutral: %i" % (Pos, Neg, Neu) )
+	if (Tot > 0):
+		print("Queue Finished\nPositive: %i, Negative: %i, Neutral: %i" % (Pos, Neg, Neu) )
+	time.sleep(5)
