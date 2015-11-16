@@ -16,6 +16,14 @@ if (!inSession()) {
 } else {
 	$userId = $_SESSION['userId'];
 }
+$latestTweets = array();
+$fetchTweets = False;
+if (!empty($_GET['fetchtweets'])) {
+	if ($_GET['fetchtweets'] == 'true') {
+		$fetchTweets = True;
+						
+	}
+}
  
  
 set_time_limit(0);
@@ -87,6 +95,9 @@ class GhettoQueueConsumer
     
 	$result_array = array();
 	$watchedTerms = array();
+	//$latestTweets = array();
+	global $latestTweets;
+	//global $fetchTweets;
 	
 	require 'phpIncludes/dbConn.php';
 	
@@ -126,6 +137,7 @@ class GhettoQueueConsumer
 		$result_array[$term] = $termArray;
 	}
 	
+	$tweetCount = 0;
     // Loop over each line (1 line per status)
     while ($rawStatus = fgets($fp)) {
       
@@ -141,6 +153,20 @@ class GhettoQueueConsumer
 			// echo '<td>' . $data['user']['screen_name'] . '</td>';
 			// echo '<td>' . urldecode($data['text']) . '</td>';
 			// echo '</tr>';
+			
+			if ($tweetCount < 5) {
+				global $latestTweets;
+				$latestTweets[] = array(
+					'text' => urldecode($data['text']),
+					'sentiment' => $data['sentiment']
+				);				
+			}
+			$tweetCount += 1;
+
+			// global $fetchTweets;
+			// if ($fetchTweets) {
+				// echo json_encode($latestTweets);
+			// }
 				
 			$tweet = urldecode($data['text']);
 			foreach ($watchedTerms as $term) {
@@ -171,10 +197,15 @@ class GhettoQueueConsumer
     // All done with this file
     //$this->log('Successfully processed ' . $this->statusCounter . ' tweets from ' . $queueFile . ' - deleting.');
     //unlink($queueFile);    
-    
+    global $fetchTweets;
+	$fetchmode = $fetchTweets;
+
 	//echo the data as json
-	echo json_encode($result_array);
-	
+	if (!$fetchmode) {
+		echo json_encode($result_array);
+	} else {
+		echo json_encode($latestTweets);		
+	}
 	
   }
 

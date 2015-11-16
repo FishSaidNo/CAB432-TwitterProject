@@ -103,7 +103,8 @@
               <span class="text-muted">Something else</span>
             </div>
           </div>
--->		  
+-->		
+<!--  
 		<h2 class="sub-header">Tweets</h2>
 		<div id="ajaxResults">
 		<h3 style="text-align: center;">Total tweets analysied in last window: <strong>4204</strong>. Window size: <strong>200 seconds</strong></h3></br>
@@ -150,9 +151,52 @@
 		  </tbody>
 		</table>
 		</div>
-		<div>
-			
+-->
 
+
+
+
+		<h2 class="sub-header">Tweet Analysis</h2>
+		<div id="ajaxResults">
+		<h3 style="text-align: center;">Total tweets analysied in last window: <strong>4204</strong>. Window size: <strong>200 seconds</strong></h3></br>
+		<div class="table-responsive">
+		<table class="table table-striped">
+		  <thead>
+			<tr>
+			  <th>Term</th>
+			  <th>Occurences</th>
+			  <th>Positive Sentiment</th>
+			  <th>Neutral Sentiment</th>
+			  <th>Negative Sentiment</th>
+			</tr>
+		  </thead>
+		  <tbody id="load_from_queue">
+
+		  </tbody>
+		</table>
+		</div>
+		
+		<h2 class="sub-header">Latest Tweets</h2>
+		<div id="ajaxResults">
+		<div class="table-responsive">
+		<table class="table table-striped">
+		  <thead>
+			<tr>
+			  <th>Tweet Content</th>
+			  <th>Sentiment</th>
+			</tr>
+		  </thead>
+		  <tbody id="latestTweets">
+
+		  </tbody>
+		</table>
+		</div>		
+
+
+		
+		
+<!--		
+		<div>
           <div class="table-responsive">
             <table class="table table-striped">
 			  <thead>
@@ -163,7 +207,7 @@
                 </tr>
               </thead>
               <tbody id="load_from_queue">
-				<!-- Fills from external file -->
+				<!-- Fills from external file --
               </tbody>
             </table>
           </div>
@@ -171,7 +215,7 @@
         </div>
       </div>
     </div>
-
+-->
 <!--	
 	<script type="text/javascript">                                    
 		$('#load_from_queue').load('queue-consume.php');
@@ -180,26 +224,43 @@
 
 	<script type="text/javascript">
 		function drawTable(data) {
-			for (var i = 0; i < data.length; i++) {
-				console.log("a");
-				var row = $("<tr />");
+			//var results = JSON.parse(data);
+			var results = data;
+			for (var tweet in results) {
+				 console.log(tweet);
+				var row = $("<tr/>");
+				row.append("<td>" + tweet + "</td>");
+				row.append("<td>" + results[tweet]['occurs'] + "</td>");
+				row.append("<td>" + results[tweet]['positive'] + "</td>");
+				row.append("<td>" + results[tweet]['negative'] + "</td>");
+				row.append("<td>" + results[tweet]['neutral'] + "</td>");
 				$('#load_from_queue').append(row);
-				row.append($("<td>" + data[i].occurs + "</td>"));
-				row.append($("<td>" + data[i].positive + "</td>"));
-				row.append($("<td>" + data[i].negative + "</td>"));
-			}
-		}
+			}	
+			
+		} //End function
 		
-		//$('#load_from_queue').load('queue-consume-v2.php');
-		 $( document ).ready(function() {
-			 console.log( "Doc ready!" );
+		function drawTable2(data) {
+			//var results = JSON.parse(data);
+			var results = data;
+			for (var tweet in results) {
+				 console.log(tweet);
+				var row = $("<tr/>");
+				row.append("<td>" + results[tweet]['text'] + "</td>");
+				row.append("<td>" + results[tweet]['sentiment'] + "</td>");
+				$('#latestTweets').append(row);
+			}	
+			
+		} //End function
+		
+		function refreshTable() {
 			 $.ajax({
 				 method: 'GET',
 				 url: 'queue-consume-v2.php',
 				 dataType: 'json',
 				 success: function(result)
 				 {
-					 //console.log(result);
+					 console.log(result);
+					 $('#load_from_queue').empty();
 					 drawTable(result);
 				 },
 				 error: function(XMLHttpRequest, textStatus, errorThrown)
@@ -207,7 +268,43 @@
 					 alert("Status: " + textStatus);
 					 alert("Error: " + errorThrown);
 				 }
-			 });	
+			 });			
+		}
+		
+		function refreshLatestTweets() {
+			 $.ajax({
+				 method: 'GET',
+				 url: 'queue-consume-v2.php?fetchtweets=true',
+				 dataType: 'json',
+				 success: function(result)
+				 {
+					 console.log(result);
+					 $('#latestTweets').empty();
+					 drawTable2(result);
+				 },
+				 error: function(XMLHttpRequest, textStatus, errorThrown)
+				 {
+					 alert("Status: " + textStatus);
+					 alert("Error: " + errorThrown);
+				 }
+			 });			
+		}
+		
+		
+		
+		//$('#load_from_queue').load('queue-consume-v2.php');
+		 $( document ).ready(function() {
+			 console.log( "Doc ready!" );
+			 
+			 refreshTable();
+			 refreshLatestTweets();
+			 
+			 //refreshTable();
+			 
+			setInterval(refreshTable, 10000);
+			setInterval(refreshLatestTweets, 2000);
+
+		 
 		 });
 	</script>
 	
