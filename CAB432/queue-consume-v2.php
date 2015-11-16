@@ -63,10 +63,11 @@ class GhettoQueueConsumer
       $this->log('Found ' . count($queueFiles) . ' queue files to process...');
       
       // Iterate over each file (if any)
-      foreach ($queueFiles as $queueFile) {
+      //foreach ($queueFiles as $queueFile) {
 		//if ($this->statusCounter >= 30) {break;}
-        $this->processQueueFile($queueFile);
-      }
+        $this->processQueueFile(end($queueFiles));
+		//break;
+      //}
       
       // Wait until ready for next check
       //$this->log('Sleeping...');
@@ -196,7 +197,6 @@ class GhettoQueueConsumer
     
     // All done with this file
     //$this->log('Successfully processed ' . $this->statusCounter . ' tweets from ' . $queueFile . ' - deleting.');
-    //unlink($queueFile);    
     global $fetchTweets;
 	$fetchmode = $fetchTweets;
 
@@ -207,6 +207,7 @@ class GhettoQueueConsumer
 		echo json_encode($latestTweets);		
 	}
 	
+	//unlink($queueFile);
   }
 
   protected function log($message)

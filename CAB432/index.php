@@ -302,7 +302,7 @@
 			 //refreshTable();
 			 
 			setInterval(refreshTable, 10000);
-			setInterval(refreshLatestTweets, 2000);
+			setInterval(refreshLatestTweets, 6000);
 
 		 
 		 });
