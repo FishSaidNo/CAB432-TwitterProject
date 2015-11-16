@@ -163,29 +163,30 @@ else:
 		with open(queueFile, 'rt') as f:
 			for line in f:
 				json_data = json.loads(line)
-				Text = json_data['text']
 				
-				processedTestTweet = processTweet(Text)
-				sentiment = NBClassifier.classify(extract_features(getFeatureVector(processedTestTweet, stopWords)))
-				
-				if (sentiment == 'positive'):
-					Pos = Pos + 1
-					#PosT.append(Text)
-				elif (sentiment == 'negative'):
-					Neg = Neg + 1
-					#NegT.append(Text)
-				elif (sentiment == 'neutral'):
-					Neu = Neu + 1
-					#NeuT.append(Text)
-				else:
-					print('Error, unclassified tweet')
-				
-				tweet_data = {
-					"text": Text,
-					"sentiment": sentiment
-				}
-				f2.write(json.dumps(tweet_data) + "\n")
-				print ("Tweet = %s, Sentiment = %s\n" % (Text.encode(sys.stdout.encoding, 'replace'), sentiment))
+				if ('text' in json_data):
+					Text = json_data['text']
+					processedTestTweet = processTweet(Text)
+					sentiment = NBClassifier.classify(extract_features(getFeatureVector(processedTestTweet, stopWords)))
+					
+					if (sentiment == 'positive'):
+						Pos = Pos + 1
+						#PosT.append(Text)
+					elif (sentiment == 'negative'):
+						Neg = Neg + 1
+						#NegT.append(Text)
+					elif (sentiment == 'neutral'):
+						Neu = Neu + 1
+						#NeuT.append(Text)
+					else:
+						print('Error, unclassified tweet')
+					
+					tweet_data = {
+						"text": Text,
+						"sentiment": sentiment
+					}
+					f2.write(json.dumps(tweet_data) + "\n")
+					print ("Tweet = %s, Sentiment = %s\n" % (Text.encode(sys.stdout.encoding, 'replace'), sentiment))
 				
 			f2.close()
 				
